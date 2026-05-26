@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>☣️ ARCHITECT MAXIMAL HEAVY QUANT OPS v4</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --neon: #39ff14; --cyber: #00f0ff; --magenta: #ff007f; --dark-void: #010206;
+  --glass: rgba(2, 6, 16, 0.85); --glow: 0 0 20px rgba(57, 255, 20, 0.3);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--dark-void); color: #e2f0ff; font-family: 'Share Tech Mono', monospace;
+  overflow-x: hidden; position: relative; min-height: 100vh;
+}
+canvas#matrix { position: fixed; inset: 0; z-index: 1; opacity: 0.15; pointer-events: none; }
+.hud-wrapper { position: relative; z-index: 10; max-width: 1500px; margin: 0 auto; padding: 30px; }
+
+/* CYBER GRAPHICAL HEADER */
+.cyber-panel {
+  background: var(--glass); border: 2px solid var(--neon); border-radius: 12px;
+  padding: 30px; text-align: center; margin-bottom: 30px;
+  box-shadow: 0 0 40px rgba(57, 255, 20, 0.25), inset 0 0 30px rgba(57, 255, 20, 0.1);
+  backdrop-filter: blur(15px); position: relative;
+}
+.cyber-panel h1 {
+  font-family: 'Orbitron', sans-serif; font-size: 4rem; font-weight: 900; letter-spacing: 8px;
+  color: #fff; text-shadow: 0 0 20px var(--cyber), 0 0 40px var(--cyber), 0 0 70px var(--magenta);
+  animation: radarScan 4s infinite linear;
+}
+
+/* INDEX TABS SELECTION STRIP */
+.tab-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; margin-bottom: 30px; }
+.tab-node {
+  background: rgba(4, 9, 24, 0.9); border: 1px solid rgba(0, 240, 255, 0.15); padding: 20px;
+  border-radius: 8px; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1275);
+}
+.tab-node:hover, .tab-node.active {
+  border-color: var(--neon); transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(57, 255, 20, 0.3);
+}
+.tab-node h3 { font-size: 0.9rem; color: #648da4; letter-spacing: 2px; }
+.tab-val { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; margin: 8px 0; color: #fff; }
+
+/* HORIZONTAL TELEMETRY DISPLAYS */
+.telemetry-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 30px; }
+.tele-box {
+  background: rgba(2, 4, 10, 0.95); border: 1px solid rgba(255,255,255,0.05);
+  padding: 15px; border-left: 4px solid var(--cyber); border-radius: 4px;
+}
+
+/* LAUNCH TRIGGER ACTION CONTROL */
+.trigger-btn {
+  width: 100%; padding: 25px; background: transparent; border: 2px solid var(--magenta);
+  color: var(--magenta); font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900;
+  letter-spacing: 6px; border-radius: 8px; cursor: pointer; position: relative;
+  transition: all 0.4s; text-shadow: 0 0 10px var(--magenta); margin-bottom: 35px;
+}
+.trigger-btn:hover {
+  background: rgba(255, 0, 127, 0.12); box-shadow: 0 0 50px var(--magenta), inset 0 0 20px var(--magenta);
+  color: #fff; transform: scale(1.01);
+}
+
+/* PREDICTION SYSTEM DISPLAY BLOCKS */
+.deck-reveal { display: none; animation: heavyIgnite 0.5s ease-out; }
+@keyframes heavyIgnite { from { opacity:0; transform: scale(0.95) rotateX(10deg); } to { opacity:1; transform: scale(1) rotateX(0); } }
+
+.verdict-board {
+  background: var(--glass); border: 2px solid var(--cyber); border-radius: 12px;
+  padding: 40px; text-align: center; margin-bottom: 30px; box-shadow: 0 0 40px rgba(0,240,255,0.2);
+}
+.v-title { font-family: 'Orbitron', sans-serif; font-size: 4.5rem; font-weight: 900; }
+.v-points { font-family: 'Orbitron', sans-serif; font-size: 3rem; margin: 15px 0; }
+
+/* MASSIVE DYNAMIC TRI-CYLINDER RINGS */
+.ring-cluster { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 35px; }
+.ring-hull { background: var(--glass); border: 1px solid rgba(255,255,255,0.04); border-radius: 10px; padding: 30px; text-align: center; position: relative; }
+.circle-svg { width: 140px; height: 140px; transform: rotate(-90deg); margin: 0 auto 15px; }
+.circle-svg circle { fill: none; stroke-width: 10; }
+.c-track { stroke: rgba(255,255,255,0.02); }
+.c-fill { stroke-dasharray: 376.8; stroke-dashoffset: 376.8; transition: stroke-dashoffset 1.8s cubic-bezier(0.19, 1, 0.22, 1); }
+.ring-metric { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: 900; }
+
+/* 12 CONDITION MONITOR DISPLAY PANELS */
+.matrix-monitor { background: var(--glass); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 10px; padding: 30px; }
+.matrix-row {
+  display: grid; grid-template-columns: 40px 1fr 120px; gap: 20px; align-items: center;
+  padding: 16px; background: rgba(0,0,0,0.4); border-radius: 6px; margin-bottom: 10px;
+  border-left: 3px solid rgba(255,255,255,0.1); transition: all 0.2s;
+}
+.matrix-row:hover { background: rgba(0,240,255,0.03); border-left-color: var(--cyber); }
+.bull-tag { color: var(--neon); text-shadow: 0 0 10px var(--neon); font-weight: bold; }
+.bear-tag { color: var(--magenta); text-shadow: 0 0 10px var(--magenta); font-weight: bold; }
+</style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="hud-wrapper">
+  <div class="cyber-panel">
+    <div style="font-size: 0.9rem; color: var(--cyber); letter-spacing: 6px; margin-bottom: 8px;">QUANTUM DEEP RADAR DATA SCANNER</div>
+    <h1>OMEGA TERMINAL</h1>
+    <div style="font-size: 0.85rem; color: #4b6a8a; letter-spacing: 3px;">12-ARRAY ALGORITHMIC MARKET OPENING COMPLEX</div>
+  </div>
+
+  <div class="tab-strip">
+    <div class="tab-node active" id="tab-nifty" onclick="switchActiveIndex('nifty')">
+      <h3>NIFTY 50</h3><div class="tab-val" id="v-nifty">SYNCING</div><span style="color:var(--neon);" id="c-nifty">● live feed</span>
+    </div>
+    <div class="tab-node" id="tab-banknifty" onclick="switchActiveIndex('banknifty')">
+      <h3>BANK NIFTY</h3><div class="tab-val" id="v-banknifty">SYNCING</div><span style="color:var(--neon);" id="c-banknifty">● live feed</span>
+    </div>
+    <div class="tab-node" id="tab-sensex" onclick="switchActiveIndex('sensex')">
+      <h3>SENSEX</h3><div class="tab-val" id="v-sensex">SYNCING</div><span style="color:var(--neon);" id="c-sensex">● live feed</span>
+    </div>
+    <div class="tab-node" id="tab-midcap" onclick="switchActiveIndex('midcap')">
+      <h3>MIDCAP NIFTY</h3><div class="tab-val" id="v-midcap">SYNCING</div><span style="color:var(--neon);" id="c-midcap">● live feed</span>
+    </div>
+    <div class="tab-node" id="tab-finnifty" onclick="switchActiveIndex('finnifty')">
+      <h3>FIN NIFTY</h3><div class="tab-val" id="v-finnifty">SYNCING</div><span style="color:var(--neon);" id="c-finnifty">● live feed</span>
+    </div>
+  </div>
+
+  <div class="telemetry-strip">
+    <div class="tele-box"><div style="color:#517192; font-size:0.8rem;">GIFT NIFTY STRIDE</div><div class="tab-val" style="font-size:1.4rem; color:var(--cyber);" id="h-gift">—</div></div>
+    <div class="tele-box"><div style="color:#517192; font-size:0.8rem;">INDIA VIX RISK</div><div class="tab-val" style="font-size:1.4rem;" id="h-vix">—</div></div>
+    <div class="tele-box"><div style="color:#517192; font-size:0.8rem;">DERIVATIVE PCR</div><div class="tab-val" style="font-size:1.4rem;" id="h-pcr">—</div></div>
+    <div class="tele-box"><div style="color:#517192; font-size:0.8rem;">FII CASH ACCUM</div><div class="tab-val" style="font-size:1.4rem;" id="h-fii">—</div></div>
+    <div class="tele-box"><div style="color:#517192; font-size:0.8rem;">GLOBAL WALL ST</div><div class="tab-val" style="font-size:1.4rem;" id="h-dow">—</div></div>
+  </div>
+
+  <button class="trigger-btn" id="triggerBtn" onclick="igniteComputation()">⚡ INITIALIZE COGNITIVE DATA CONVERGENCE</button>
+
+  <div class="deck-reveal" id="deckReveal">
+    <div class="verdict-board" id="verdictBlock">
+      <div class="v-title" id="vDir">GAP UP DETECTED</div>
+      <div class="v-points" id="vPts">+148.50 PTS</div>
+      <p style="color:#9bc1d9; font-size: 1.1rem; max-width: 900px; margin: 0 auto;" id="vSum"></p>
+    </div>
+
+    <div class="ring-cluster">
+      <div class="ring-hull">
+        <div class="circle-svg"><svg width="140" height="140"><circle class="c-track" cx="70" cy="70" r="60"/><circle class="c-fill" id="rUp" stroke="var(--neon)" cx="70" cy="70" r="60"/></svg></div>
+        <div class="ring-metric" style="color:var(--neon);" id="tUp">0%</div>
+        <div style="color:#527395; font-size:0.85rem; letter-spacing:1px;">GAP UP PROBABILITY</div>
+      </div>
+      <div class="ring-hull">
+        <div class="circle-svg"><svg width="140" height="140"><circle class="c-track" cx="70" cy="70" r="60"/><circle class="c-fill" id="rFlat" stroke="#ffdf00" cx="70" cy="70" r="60"/></svg></div>
+        <div class="ring-metric" style="color:#ffdf00;" id="tFlat">0%</div>
+        <div style="color:#527395; font-size:0.85rem; letter-spacing:1px;">FLAT OPEN PRESSURE</div>
+      </div>
+      <div class="ring-hull">
+        <div class="circle-svg"><svg width="140" height="140"><circle class="c-track" cx="70" cy="70" r="60"/><circle class="c-fill" id="rDown" stroke="var(--magenta)" cx="70" cy="70" r="60"/></svg></div>
+        <div class="ring-metric" style="color:var(--magenta);" id="tDown">0%</div>
+        <div style="color:#527395; font-size:0.85rem; letter-spacing:1px;">GAP DOWN RISK PROFILE</div>
+      </div>
+    </div>
+
+    <div class="matrix-monitor">
+      <h2 style="font-family:'Orbitron'; font-size:1.2rem; color:var(--cyber); margin-bottom:20px; letter-spacing:2px;">◈ SCANNED 12-POINT CONDITION BIAS LOG MATRIX</h2>
+      <div id="conditionLogsContainer"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let activeIndex = 'nifty';
+const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://127.0.0.1:8000'
+  : 'https://market-gap-backend.onrender.com';
+
+// ACTIVE CANVAS MATRIX FALLING GREEN CODE FIELD
+const canvas = document.getElementById('matrix');
+const ctx = canvas.getContext('2d');
+let w = canvas.width = window.innerWidth;
+let h = canvas.height = window.innerHeight;
+const cols = Math.floor(w / 20) + 1;
+const ypos = Array(cols).fill(0);
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(1, 2, 6, 0.05)'; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#39ff14'; ctx.font = '15px monospace';
+  ypos.forEach((y, ind) => {
+    const text = String.fromCharCode(Math.floor(Math.random() * 128));
+    const x = ind * 20; ctx.fillText(text, x, y);
+    if (y > 100 + Math.random() * 10000) ypos[ind] = 0; else ypos[ind] = y + 20;
+  });
+}
+setInterval(drawMatrix, 50);
+
+// REFRESH TELEMETRY HUD DATA STREAM
+async function performSyncTelemetry() {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/analyze/${activeIndex}`);
+    const payload = await res.json();
+    const ld = payload.live_data;
+    
+    document.getElementById('v-nifty').textContent = ld.nifty_val;
+    document.getElementById('v-banknifty').textContent = ld.banknifty_val;
+    document.getElementById('v-sensex').textContent = ld.sensex_val;
+    document.getElementById('v-midcap').textContent = ld.midcap_val;
+    document.getElementById('v-finnifty').textContent = ld.finnifty_val;
+    
+    document.getElementById('h-gift').textContent = ld.gift;
+    document.getElementById('h-vix').textContent = ld.vix;
+    document.getElementById('h-pcr').textContent = ld.pcr;
+    document.getElementById('h-fii').textContent = ld.fii;
+    document.getElementById('h-dow').textContent = ld.dow;
+  } catch(e) { console.log("Awaiting core cloud sync framework initialization."); }
+}
+setInterval(performSyncTelemetry, 9000);
+performSyncTelemetry();
+
+function switchActiveIndex(key) {
+  activeIndex = key;
+  document.querySelectorAll('.tab-node').forEach(n => n.classList.remove('active'));
+  document.getElementById(`tab-${key}`).classList.add('active');
+  document.getElementById('deckReveal').style.display = 'none';
+  performSyncTelemetry();
+}
+
+// QUANT CONVERGENCE ACTION LOGIC TRIGGER
+async function igniteComputation() {
+  const btn = document.getElementById('triggerBtn');
+  btn.textContent = '☢️ COMPUTING 12-POINT VECTOR LOGARITHMS...';
+  
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/analyze/${activeIndex}`);
+    const data = await res.json();
+    
+    document.getElementById('deckReveal').style.display = 'block';
+    document.getElementById('vDir').textContent = `GAP ${data.direction} TARGETED`;
+    document.getElementById('vDir').className = 'v-title ' + (data.direction === 'UP' ? 'up-trend' : 'down-trend');
+    document.getElementById('vPts').textContent = `${data.gap_pts} POINTS`;
+    document.getElementById('vSum').textContent = data.summary;
+    
+    // Circle Progression Calculations
+    const circumference = 376.8;
+    document.getElementById('rUp').style.strokeDashoffset = circumference - (data.prob_up / 100) * circumference;
+    document.getElementById('rFlat').style.strokeDashoffset = circumference - (data.prob_flat / 100) * circumference;
+    document.getElementById('rDown').style.strokeDashoffset = circumference - (data.prob_down / 100) * circumference;
+    
+    document.getElementById('tUp').textContent = `${data.prob_up}%`;
+    document.getElementById('tFlat').textContent = `${data.prob_flat}%`;
+    document.getElementById('tDown').textContent = `${data.prob_down}%`;
+    
+    // Load up the 12 Condition Monitor rows automatically
+    const container = document.getElementById('conditionLogsContainer'); container.innerHTML = '';
+    data.conditions.forEach(c => {
+      const isBull = c.status === 'BULLISH';
+      container.innerHTML += `<div class="matrix-row">
+        <div style="font-size:1.2rem;">${isBull ? '🟩' : (c.status === 'BEARISH' ? '🟥' : '🟨')}</div>
+        <div>
+          <div style="font-size:1.05rem; font-weight:bold; color:#fff;">${c.name}</div>
+          <div style="font-size:0.85rem; color:#87a1b5; margin-top:2px;">${c.desc}</div>
+        </div>
+        <div class="${isBull ? 'bull-tag' : 'bear-tag'}" style="text-align:right;">${c.status}</div>
+      </div>`;
+    });
+    
+  } catch(e) { alert("Matrix link error resetting cloud network pipelines."); }
+  finally { btn.textContent = '⚡ INITIALIZE COGNITIVE DATA CONVERGENCE'; }
+}
+</script>
+</body>
+</html>
