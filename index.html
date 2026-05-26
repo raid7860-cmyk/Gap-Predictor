@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>☣️ OMEGA TERMINAL: HEAVY QUANT COGNITIVE ENGINE</title>
+<title>☣️ OMEGA TERMINAL: HEAVY LIVE QUANT ENGINE</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 :root {
   --neon: #39ff14; --cyber: #00f0ff; --magenta: #ff007f; --dark-void: #010206;
-  --glass: rgba(2, 6, 16, 0.85); --glow: 0 0 20px rgba(57, 255, 20, 0.3);
+  --glass: rgba(2, 6, 16, 0.9);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -33,7 +33,7 @@ canvas#matrix { position: fixed; inset: 0; z-index: 1; opacity: 0.12; pointer-ev
 /* INDEX TABS SELECTION STRIP */
 .tab-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; margin-bottom: 30px; }
 .tab-node {
-  background: rgba(4, 9, 24, 0.9); border: 1px solid rgba(0, 240, 255, 0.15); padding: 20px;
+  background: rgba(4, 9, 24, 0.95); border: 1px solid rgba(0, 240, 255, 0.15); padding: 20px;
   border-radius: 8px; cursor: pointer; transition: all 0.3s ease;
 }
 .tab-node.active {
@@ -51,7 +51,7 @@ canvas#matrix { position: fixed; inset: 0; z-index: 1; opacity: 0.12; pointer-ev
   padding: 15px; border-left: 4px solid var(--cyber); border-radius: 4px;
 }
 .tele-lbl { color: #517192; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 5px; }
-.tele-val { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; color: #fff; }
+.tele-val { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; color: #fff; }
 
 /* LAUNCH TRIGGER ACTION CONTROL */
 .trigger-btn {
@@ -75,6 +75,7 @@ canvas#matrix { position: fixed; inset: 0; z-index: 1; opacity: 0.12; pointer-ev
 .v-title { font-family: 'Orbitron', sans-serif; font-size: 4rem; font-weight: 900; }
 .v-points { font-family: 'Orbitron', sans-serif; font-size: 2.6rem; margin: 10px 0; }
 .up-trend { color: var(--neon); text-shadow: 0 0 15px rgba(57, 255, 20, 0.4); }
+.down-trend { color: var(--magenta); text-shadow: 0 0 15px rgba(255, 0, 127, 0.4); }
 
 /* DYNAMIC PROGRESS CYLINDERS */
 .ring-cluster { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 35px; }
@@ -88,11 +89,14 @@ canvas#matrix { position: fixed; inset: 0; z-index: 1; opacity: 0.12; pointer-ev
 /* 12 CONDITION MONITOR DISPLAY PANELS */
 .matrix-monitor { background: var(--glass); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 10px; padding: 30px; }
 .matrix-row {
-  display: grid; grid-template-columns: 50px 1fr 180px; gap: 20px; align-items: center;
+  display: grid; grid-template-columns: 50px 1fr 240px; gap: 20px; align-items: center;
   padding: 16px; background: rgba(0,0,0,0.4); border-radius: 6px; margin-bottom: 10px;
   border-left: 3px solid rgba(255,255,255,0.1);
 }
-.bull-tag { color: var(--neon); text-shadow: 0 0 10px var(--neon); font-weight: bold; }
+.status-tag { text-align: right; font-weight: bold; font-size: 0.95rem; }
+.tag-bullish { color: var(--neon); text-shadow: 0 0 10px var(--neon); }
+.tag-bearish { color: var(--magenta); text-shadow: 0 0 10px var(--magenta); }
+.tag-neutral { color: #ffdf00; text-shadow: 0 0 10px #ffdf00; }
 </style>
 </head>
 <body>
@@ -101,43 +105,43 @@ canvas#matrix { position: fixed; inset: 0; z-index: 1; opacity: 0.12; pointer-ev
 
 <div class="hud-wrapper">
   <div class="cyber-panel">
-    <div style="font-size: 0.85rem; color: var(--cyber); letter-spacing: 6px; margin-bottom: 8px;">QUANTUM ANALYTICS CORE PROTOCOL</div>
+    <div style="font-size: 0.85rem; color: var(--cyber); letter-spacing: 6px; margin-bottom: 8px;">QUANTUM AUTOMATED DATA HARVESTER</div>
     <h1>OMEGA TERMINAL</h1>
-    <div style="font-size: 0.85rem; color: #4b6a8a; letter-spacing: 3px; margin-top: 5px;">AUTOMATED PRE-MARKET MATRIX MONITOR</div>
+    <div style="font-size: 0.85rem; color: #4b6a8a; letter-spacing: 3px; margin-top: 5px;">LIVE 8-CONDITION PRE-MARKET MATRIX MONITOR</div>
   </div>
 
   <div class="tab-strip">
     <div class="tab-node active" id="tab-nifty" onclick="switchIndex('nifty')">
-      <h3>NIFTY 50</h3><div class="tab-val" id="v-nifty">23,744.00</div><span class="tab-status" style="color:var(--neon);" id="c-nifty">+194.00 (+0.82%)</span>
+      <h3>NIFTY 50</h3><div class="tab-val" id="v-nifty">LOADING...</div><span class="tab-status" id="c-nifty">polling...</span>
     </div>
     <div class="tab-node" id="tab-banknifty" onclick="switchIndex('banknifty')">
-      <h3>BANK NIFTY</h3><div class="tab-val" id="v-banknifty">54,237.20</div><span class="tab-status" style="color:var(--neon);" id="c-banknifty">+412.80 (+0.76%)</span>
+      <h3>BANK NIFTY</h3><div class="tab-val" id="v-banknifty">LOADING...</div><span class="tab-status" id="c-banknifty">polling...</span>
     </div>
     <div class="tab-node" id="tab-sensex" onclick="switchIndex('sensex')">
-      <h3>SENSEX</h3><div class="tab-val" id="v-sensex">78,164.00</div><span class="tab-status" style="color:var(--neon);" id="c-sensex">+672.00 (+0.86%)</span>
+      <h3>SENSEX</h3><div class="tab-val" id="v-sensex">LOADING...</div><span class="tab-status" id="c-sensex">polling...</span>
     </div>
     <div class="tab-node" id="tab-midcap" onclick="switchIndex('midcap')">
-      <h3>MIDCAP NIFTY</h3><div class="tab-val" id="v-midcap">14,416.10</div><span class="tab-status" style="color:var(--neon);" id="c-midcap">+204.90 (+1.42%)</span>
+      <h3>MIDCAP NIFTY</h3><div class="tab-val" id="v-midcap">LOADING...</div><span class="tab-status" id="c-midcap">polling...</span>
     </div>
     <div class="tab-node" id="tab-finnifty" onclick="switchIndex('finnifty')">
-      <h3>FIN NIFTY</h3><div class="tab-val" id="v-finnifty">25,629.00</div><span class="tab-status" style="color:#517192;" id="c-finnifty">● sync data</span>
+      <h3>FIN NIFTY</h3><div class="tab-val" id="v-finnifty">LOADING...</div><span class="tab-status" id="c-finnifty">polling...</span>
     </div>
   </div>
 
   <div class="telemetry-strip">
-    <div class="tele-box"><div class="tele-lbl">GIFT NIFTY PRICE</div><div class="tele-val" style="color:var(--cyber);" id="h-gift">23,938.00</div></div>
-    <div class="tele-box"><div class="tele-lbl">INDIA VIX</div><div class="tele-val" style="color:var(--magenta);" id="h-vix">14.82</div></div>
-    <div class="tele-box"><div class="tele-lbl">OPTION PCR</div><div class="tele-val" style="color:#ffdf00;" id="h-pcr">1.18</div></div>
-    <div class="tele-box"><div class="tele-lbl">FII NET FLOW</div><div class="tele-val" style="color:var(--neon);" id="h-fii">+3,420 Cr</div></div>
-    <div class="tele-box"><div class="tele-lbl">WALL STREET (DOW)</div><div class="tele-val" id="h-dow">+284 pts</div></div>
+    <div class="tele-box"><div class="tele-lbl">GIFT NIFTY LIVE</div><div class="tele-val" style="color:var(--cyber);" id="h-gift">—</div></div>
+    <div class="tele-box"><div class="tele-lbl">INDIA VIX</div><div class="tele-val" style="color:var(--magenta);" id="h-vix">—</div></div>
+    <div class="tele-box"><div class="tele-lbl">OPTION PCR</div><div class="tele-val" style="color:#ffdf00;" id="h-pcr">—</div></div>
+    <div class="tele-box"><div class="tele-lbl">FII FLOW (NSE)</div><div class="tele-val" style="color:var(--neon);" id="h-fii">—</div></div>
+    <div class="tele-box"><div class="tele-lbl">WALL STREET (DOW)</div><div class="tele-val" id="h-dow">—</div></div>
   </div>
 
   <button class="trigger-btn" id="triggerBtn" onclick="igniteComputation()">⚡ INITIALIZE COGNITIVE DATA CONVERGENCE</button>
 
   <div class="deck-reveal" id="deckReveal">
     <div class="verdict-board">
-      <div class="v-title up-trend" id="vDir">GAP UP TARGETED</div>
-      <div class="v-points up-trend" id="vPts">+194 POINTS</div>
+      <div class="v-title" id="vDir">—</div>
+      <div class="v-points" id="vPts">—</div>
       <p style="color:#9bc1d9; font-size:1.1rem; max-width:900px; margin:15px auto 0;" id="vSum"></p>
     </div>
 
@@ -160,7 +164,7 @@ canvas#matrix { position: fixed; inset: 0; z-index: 1; opacity: 0.12; pointer-ev
     </div>
 
     <div class="matrix-monitor">
-      <h2 style="font-family:'Orbitron'; font-size:1.2rem; color:var(--cyber); margin-bottom:20px; letter-spacing:2px;">◈ OMEGA CORE PRE-MARKET MATRIX SCANNED: MINIMUM 8 CONDITIONS LOCKED</h2>
+      <h2 style="font-family:'Orbitron'; font-size:1.2rem; color:var(--cyber); margin-bottom:20px; letter-spacing:2px;">◈ OMEGA CORE PRE-MARKET MATRIX SCANNED: 8 AUTOMATED LIVE CONDITIONS</h2>
       <div id="conditionLogsContainer"></div>
     </div>
   </div>
@@ -196,10 +200,19 @@ async function performSyncTelemetry() {
     const ld = data.live_data;
     
     document.getElementById('v-nifty').textContent = ld.nifty_val;
+    document.getElementById('c-nifty').textContent = ld.nifty_chg;
+    document.getElementById('c-nifty').className = 'tab-status ' + (ld.nifty_dir === 'up' ? 'up-trend' : 'down-trend');
+    
     document.getElementById('v-banknifty').textContent = ld.banknifty_val;
+    document.getElementById('c-banknifty').textContent = ld.banknifty_chg;
+    document.getElementById('c-banknifty').className = 'tab-status ' + (ld.banknifty_dir === 'up' ? 'up-trend' : 'down-trend');
+
     document.getElementById('v-sensex').textContent = ld.sensex_val;
+    document.getElementById('c-sensex').textContent = ld.sensex_chg;
     document.getElementById('v-midcap').textContent = ld.midcap_val;
+    document.getElementById('c-midcap').textContent = ld.midcap_chg;
     document.getElementById('v-finnifty').textContent = ld.finnifty_val;
+    document.getElementById('c-finnifty').textContent = ld.finnifty_chg;
     
     document.getElementById('h-gift').textContent = ld.gift;
     document.getElementById('h-vix').textContent = ld.vix;
@@ -207,22 +220,26 @@ async function performSyncTelemetry() {
     document.getElementById('h-fii').textContent = ld.fii;
     document.getElementById('h-dow').textContent = ld.dow;
   } catch(e) {
-    console.log("Telemetry streaming loop fallback standby.");
+    console.log("Live stream tracking connection scanning...");
   }
 }
-setInterval(performSyncTelemetry, 10000);
+setInterval(performSyncTelemetry, 6000);
+performSyncTelemetry();
 
 function switchIndex(key) {
   activeIndex = key;
   document.querySelectorAll('.tab-node').forEach(n => n.classList.remove('active'));
   document.getElementById(`tab-${key}`).classList.add('active');
   document.getElementById('deckReveal').style.display = 'none';
+  performSyncTelemetry();
 }
 
 function processLayoutDisplay(data) {
   document.getElementById('deckReveal').style.display = 'block';
   document.getElementById('vDir').textContent = `GAP ${data.direction} TARGETED`;
+  document.getElementById('vDir').className = 'v-title ' + (data.direction === 'UP' ? 'up-trend' : 'down-trend');
   document.getElementById('vPts').textContent = `+${data.gap_pts} POINTS`;
+  document.getElementById('vPts').className = 'v-points ' + (data.direction === 'UP' ? 'up-trend' : 'down-trend');
   document.getElementById('vSum').textContent = data.summary;
   
   const circumference = 376.8;
@@ -237,45 +254,31 @@ function processLayoutDisplay(data) {
   const container = document.getElementById('conditionLogsContainer'); 
   container.innerHTML = '';
   data.conditions.forEach(c => {
+    let tagClass = 'tag-neutral';
+    if(c.status.includes('BULLISH')) tagClass = 'tag-bullish';
+    if(c.status.includes('BEARISH')) tagClass = 'tag-bearish';
+
     container.innerHTML += `<div class="matrix-row">
-      <div style="font-size:1.2rem;">🟩</div>
+      <div style="font-size:1.2rem;">${tagClass==='tag-bullish'?'🟩':(tagClass==='tag-bearish'?'🟥':'🟨')}</div>
       <div>
         <div style="font-size:1.05rem; font-weight:bold; color:#fff;">${c.name} <span style="color:var(--cyber); margin-left:10px;">[ ${c.val} ]</span></div>
-        <div style="font-size:0.85rem; color:#87a1b5; margin-top:3px;">${c.desc}</div>
+        <div style="font-size:0.85rem; color:#87a1b5; margin-top:4px;">${c.desc}</div>
       </div>
-      <div class="bull-tag" style="text-align:right;">${c.status}</div>
+      <div class="status-tag ${tagClass}">${c.status}</div>
     </div>`;
   });
 }
 
 async function igniteComputation() {
   const btn = document.getElementById('triggerBtn');
-  btn.textContent = '☢️ PARSING 8-POINT CORE RULES...';
+  btn.textContent = '☢️ INJECTING LIVE 8-POINT MATRIX CALCULATIONS...';
   
   try {
     const res = await fetch(`${BACKEND_URL}/api/analyze/${activeIndex}`);
-    if(!res.ok) throw new Error("CORS fallback check triggered.");
     const data = await res.json();
     processLayoutDisplay(data);
   } catch(e) {
-    // SYSTEM HIGH-FIDELITY LOCAL ENGINE FOR DATA VISUALIZATION — NEVER BLANKS AGAIN
-    const localFallbackData = {
-      "direction": "UP",
-      "gap_pts": 194,
-      "prob_up": 72, "prob_flat": 18, "prob_down": 10,
-      "summary": "Omega Terminal tracking algorithms confirm multi-variable bullish convergence. A clear variance gap of +194 points exists between the previous close and overnight global futures.",
-      "conditions": [
-        {"name": "1. GIFT Nifty Directional Spread", "val": "GIFT: 23,938 vs Close: 23,744", "status": "BULLISH", "desc": "A direct positive premium of +194.00 points has built up overnight, signaling a strong gap-up probability."},
-        {"name": "2. Wall Street Index Momentum", "val": "Dow Jones: +284 pts", "status": "BULLISH", "desc": "US markets closed firmly green last night. Strong overnight closes on the S&P 500 and Nasdaq are providing a significant risk-on cue."},
-        {"name": "3. Asian Markets Session Opening", "val": "Nikkei: +1.12%", "status": "BULLISH", "desc": "Major Asian benchmarks are trading green this morning, supporting bullish continuity across global market tracking networks."},
-        {"name": "4. Institutional FII Capital Activity", "val": "FII: +₹3,420 Crore Net Buy", "status": "BULLISH", "desc": "Foreign Institutional Investors cleared a massive net buy day exceeding your ₹3,000 Crore threshold, confirming active accumulation."},
-        {"name": "5. Price vs VWAP Vector Position", "val": "Index above VWAP", "status": "BULLISH", "desc": "The index closed strictly above its institutional cost support anchor, confirming that buyers held position dominance at the close."},
-        {"name": "6. Derivatives Option Chain Matrix", "val": "Option PCR: 1.18", "status": "BULLISH", "desc": "The Put-Call Ratio stands strong at 1.18. Heavy Put writing is building a solid structural floor underneath current prices."},
-        {"name": "7. Macro Commodity Metrics", "val": "Crude Oil: $78.50 (-1.2%)", "status": "BULLISH", "desc": "Crude oil prices are cooling down while the USD/INR remains completely stable, protecting local market cap margins from inflation swings."},
-        {"name": "8. Overnight Macro Risk Evaluation", "val": "No Geopolitical Shocks", "status": "NEUTRAL", "desc": "No adverse economic inflation data, central bank rate changes, or unexpected geopolitical news spikes were recorded overnight."}
-      ]
-    };
-    processLayoutDisplay(localFallbackData);
+    console.log("Server syncing, processing high-fidelity tracking matrix arrays.");
   } finally {
     btn.textContent = '⚡ INITIALIZE COGNITIVE DATA CONVERGENCE';
   }
